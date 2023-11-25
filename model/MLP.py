@@ -16,7 +16,7 @@ def plot_prices(y_pred, y_test, model_name, ticker_name, title="Closing Price Pr
     plt.ylabel('Price')
     plt.xlabel('Day')
     plt.legend()
-    plt.savefig('../Output/' + ticker_name + '.png')
+    plt.savefig('./Output/figure/' + ticker_name + '.png')
     plt.show()
 
 
@@ -35,12 +35,12 @@ def get_data(ticker, start_date, end_date):
     for n in n_values:
         data[f'Day _n-{n} Price'] = data['Close'].shift(n)
 
-    # data.to_csv('./Data/' + ticker + '_stock_data.csv')
+    data.to_csv('./Data/' + ticker + '_stock_data.csv')
     # print("数据", data)
     return data
 
 
-def train(data):
+def train(data, ticker):
     # get rid of rows with empty values
     data = data.dropna()
     #
@@ -71,7 +71,7 @@ def train(data):
                          max_iter=400, solver='lbfgs', batch_size=128)
 
     # train the model
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train.ravel())
 
     # get predictions
     normalised_y_pred = model.predict(X_test)
@@ -84,16 +84,16 @@ def train(data):
         "error": mean_absolute_error(y_test, y_pred),
         "predictions": y_pred
     }
-    print("Error of " + model_name + " regression model:", model_data[model_name]["error"])
+    print("Error of " + ticker + " " + model_name + " regression model:", model_data[model_name]["error"])
     return y_pred, y_test, model_name
 
 
 def add_predict(ticker, y_pred):
-    ticker_data = pd.read_csv('../Data/' + ticker + '_stock_data.csv')
+    ticker_data = pd.read_csv('./Data/' + ticker + '_stock_data.csv')
     # print(y_pred.shape)
     # print()
     ticker_data.loc[1258:, 'prediction_price'] = y_pred.flatten()
-    ticker_data.to_csv('../Output/prediction/' + ticker + '_stock_predicted.csv')
+    ticker_data.to_csv('./Output/prediction/' + ticker + '_stock_predicted.csv')
 
 
 if __name__ == '__main__':
@@ -102,9 +102,8 @@ if __name__ == '__main__':
     stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY']
     for ticker in stocks:
         data = get_data(ticker, start_date, end_date)
-        # print(data['Open'].shape)
-        y_pred, y_test, model_name = train(data)
+        y_pred, y_test, model_name = train(data, ticker)
         # add prediction to initial data
         add_predict(ticker, y_pred)
         # plot the results
-        # plot_prices(y_pred, y_test, model_name, ticker)
+        plot_prices(y_pred, y_test, model_name, ticker)
