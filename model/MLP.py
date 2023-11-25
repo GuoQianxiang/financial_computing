@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
@@ -17,9 +16,8 @@ def plot_prices(y_pred, y_test, model_name, ticker_name, title="Closing Price Pr
     plt.ylabel('Price')
     plt.xlabel('Day')
     plt.legend()
-    plt.savefig('./Output/' + ticker_name + '.png')
+    plt.savefig('../Output/' + ticker_name + '.png')
     plt.show()
-
 
 
 def get_data(ticker, start_date, end_date):
@@ -37,8 +35,8 @@ def get_data(ticker, start_date, end_date):
     for n in n_values:
         data[f'Day _n-{n} Price'] = data['Close'].shift(n)
 
-    data.to_csv('./Data/' + ticker + '_stock_data.csv')
-    print("数据", data)
+    # data.to_csv('./Data/' + ticker + '_stock_data.csv')
+    # print("数据", data)
     return data
 
 
@@ -91,10 +89,11 @@ def train(data):
 
 
 def add_predict(ticker, y_pred):
-    ticker_data = pd.read_csv(ticker + '_stock_data.csv')
-    print()
-    # ticker_data.loc[381:, 'prediction_price'] = y_pred.flatten()
-    # ticker_data.to_csv(ticker + '_stock_predicted.csv')
+    ticker_data = pd.read_csv('../Data/' + ticker + '_stock_data.csv')
+    # print(y_pred.shape)
+    # print()
+    ticker_data.loc[1258:, 'prediction_price'] = y_pred.flatten()
+    ticker_data.to_csv('../Output/prediction/' + ticker + '_stock_predicted.csv')
 
 
 if __name__ == '__main__':
@@ -103,11 +102,9 @@ if __name__ == '__main__':
     stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY']
     for ticker in stocks:
         data = get_data(ticker, start_date, end_date)
-        print(data['Open'].shape)
+        # print(data['Open'].shape)
         y_pred, y_test, model_name = train(data)
         # add prediction to initial data
         add_predict(ticker, y_pred)
         # plot the results
-        plot_prices(y_pred, y_test, model_name, ticker)
-
-
+        # plot_prices(y_pred, y_test, model_name, ticker)
