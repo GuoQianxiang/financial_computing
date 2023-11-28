@@ -70,7 +70,7 @@ def train(data, ticker):
     model = MLPRegressor(activation='relu', alpha=0.005, hidden_layer_sizes=(100,), learning_rate='invscaling',
                          max_iter=400, solver='lbfgs', batch_size=128)
 
-    # train the model
+    # train the Model
     model.fit(X_train, y_train.ravel())
 
     # get predictions
@@ -84,7 +84,7 @@ def train(data, ticker):
         "error": mean_absolute_error(y_test, y_pred),
         "predictions": y_pred
     }
-    print("Error of " + ticker + " " + model_name + " regression model:", model_data[model_name]["error"])
+    print("Error of " + ticker + " " + model_name + " regression Model:", model_data[model_name]["error"])
     return y_pred, y_test, model_name
 
 

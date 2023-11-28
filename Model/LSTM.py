@@ -35,7 +35,7 @@ def split_into_windows(data, window_size, output_col, input_cols):
     return np.array(X), np.array(y)
 
 
-# this function constructs a Keras LSTM model and returns it
+# this function constructs a Keras LSTM Model and returns it
 def build_lstm_model(window_size, num_features, num_units):
     if len(num_units) == 0:
         raise Exception("Number of units cannot be empty")
@@ -56,7 +56,7 @@ def build_lstm_model(window_size, num_features, num_units):
     # this is a fully-connected layer, where every node from the previous layer is connected to every node in the next layer
     model.add(keras.layers.Dense(units=1))  # 1 output value
 
-    # compile the model; since this is a regression model, we will use mean_squared_error as our loss function
+    # compile the Model; since this is a regression Model, we will use mean_squared_error as our loss function
     model.compile(loss="mean_squared_error", optimizer="adam",
                   metrics=["mae", "mse", tf.keras.metrics.MeanAbsolutePercentageError()])
 
@@ -130,10 +130,10 @@ if __name__ == '__main__':
     X_test = X_scaler.transform(X_test)
     y_test = y_test.values
 
-    # set model parameters
+    # set Model parameters
     output_col = "Close"  # because we're trying to predict closing prices in the future
     features = ["Close"]  # + list(filter(lambda x: "Day" in x, data.columns))
-    window_size = 5  # play around with window size to see its effect on model performance
+    window_size = 5  # play around with window size to see its effect on Model performance
     train_ratio = .5
     training_set_size = int(train_ratio * data.shape[0])
     # try adjusting the number of layers and hidden units in each layer;
@@ -167,17 +167,17 @@ if __name__ == '__main__':
     model_name = f"{output_col}_" + "_".join([str(i) for i in hidden_layers]) + f"_{window_size}_{epochs}"
 
     if os.path.isdir(model_name):
-        # if the model is already in local disk, just load it
+        # if the Model is already in local disk, just load it
         model = keras.models.load_model(model_name)
     else:
-        # construct the model
+        # construct the Model
         model = build_lstm_model(window_size, len(features), hidden_layers)
 
         # start training
         history = model.fit(X_train, y_train, epochs=epochs, validation_data=(X_test, y_test), shuffle=False,
                             batch_size=batch_size)
 
-        # save the model so that we do not have to train it every time
+        # save the Model so that we do not have to train it every time
         model.save(model_name)
 
         # plot the learning rate
@@ -186,7 +186,7 @@ if __name__ == '__main__':
     # get y_test from the testing dataset
     y_test = testing_dataset[[output_col]][window_size:].values
 
-    # run the model
+    # run the Model
     y_pred = model.predict(X_test)
 
     assert y_test.shape == y_pred.shape
@@ -196,9 +196,9 @@ if __name__ == '__main__':
         "error": mean_absolute_error(y_test, y_pred),
         "predictions": y_pred
     }
-    print("Error of " + model_name + " regression model:", model_data[model_name]["error"])
+    print("Error of " + model_name + " regression Model:", model_data[model_name]["error"])
 
     # calculate total error
-    print("Error of " + model_name + " regression model:", )
+    print("Error of " + model_name + " regression Model:", )
 
     plot_prices(y_pred, y_test, model_name)

@@ -77,7 +77,7 @@ y_test = y_test.values
 # now let's try SVM
 model = SVR()
 
-# train the model
+# train the Model
 model.fit(X_train, y_train)
 
 # get predictions
@@ -92,7 +92,7 @@ model_data[model_name] = {
     "error": mean_absolute_error(y_test, y_pred),
     "predictions": y_pred
 }
-print("Error of " + model_name + " regression model:", model_data[model_name]["error"])
+print("Error of " + model_name + " regression Model:", model_data[model_name]["error"])
 
 # plot the results
 plot_prices(y_pred, y_test, model_name)
