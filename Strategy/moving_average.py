@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def calculate_MA(df, ticker):
+def calculate_MA(df, ticker, factor):
     # 计算Close的14天移动平均线
     df['MA14'] = df['Close'].rolling(window=14).mean()
 
@@ -12,10 +12,10 @@ def calculate_MA(df, ticker):
     # 遍历每一行，比较预测值与移动平均线的差异
     for index, row in df.iterrows():
         # true represents selling signal
-        if row['prediction_price'] > row['MA14'] + 0.05 * row['MA14']:
+        if row['prediction_price'] > row['MA14'] + factor * row['MA14']:
             df.at[index, 'trade'] = True
         # false represents buying signal
-        elif row['prediction_price'] < row['MA14'] - 0.05 * row['MA14']:
+        elif row['prediction_price'] < row['MA14'] - factor * row['MA14']:
             df.at[index, 'trade'] = False
 
     # print(df)
@@ -60,8 +60,8 @@ def plot_MA(df, ticker):
 
 if __name__ == '__main__':
     # 假设你的DataFrame名为df，且含有'Close'和'prediction'两列
-    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY']
+    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA']
     for ticker in stocks:
         data = pd.read_csv('../Output/prediction/' + ticker + '_stock_predicted.csv')
-        data = calculate_MA(data, ticker)
+        data = calculate_MA(data, ticker, 0.05)
         plot_MA(data, ticker)
