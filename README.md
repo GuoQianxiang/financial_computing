@@ -19,4 +19,4 @@ This project contains some computing methods in finance, including following:
 
 ## Trading
 - We can calculate profits of all stocks in this part.
-
+- We will print the profits result in profits_result.txt.

@@ -1,0 +1,6 @@
+AAPL Total Profits: $11,793.80
+GOOG Total Profits: $13,929.00
+MSFT Total Profits: $7,254.79
+AMZN Total Profits: $-31,642.96
+BYDDF Total Profits: $17,849.26
+Total profits:$19,183.89

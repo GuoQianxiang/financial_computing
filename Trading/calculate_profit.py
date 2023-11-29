@@ -53,3 +53,13 @@ if __name__ == '__main__':
     plt.title('Balance of Sum five stocks')
     plt.savefig('../Output/balance/sum.png', dpi=300)
     plt.show()
+
+    # 使用 'w' 模式打开文件，如果文件不存在，将会新建一个文件
+    with open("profits_result.txt", "w") as file:
+        # 写入一些内容
+        file.write("AAPL Total Profits: $11,793.80\n")
+        file.write("GOOG Total Profits: $13,929.00\n")
+        file.write("MSFT Total Profits: $7,254.79\n")
+        file.write("AMZN Total Profits: $-31,642.96\n")
+        file.write("BYDDF Total Profits: $17,849.26\n")
+        file.write("Total profits:$19,183.89")
