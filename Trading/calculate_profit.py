@@ -1,5 +1,7 @@
+import numpy as np
 import pandas as pd
 from Strategy.bolling_macd import plot_MA
+import matplotlib.pyplot as plt
 
 
 def calculate_profits(df, principal, ticker):
@@ -8,7 +10,6 @@ def calculate_profits(df, principal, ticker):
     initial_principal = principal
     shares = 0  # 持有股票数量
     profits = []  # 记录每次买卖的收益
-    total_profits = 0  # 总收益
 
     for i, row in df.iterrows():
         if row['trade'] == False and shares == 0:
@@ -36,14 +37,19 @@ def calculate_profits(df, principal, ticker):
     else:
         print(ticker + " Total Profits: ${:,.2f}".format(principal - initial_principal))
     df.loc[:, 'balance'] = profits
-    return df
+    return df, profits
 
 
 if __name__ == '__main__':
-    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA']
+    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'BYDDF']
+    sum_balance = pd.DataFrame(columns=['balance'], data=np.zeros(251).tolist())
     for ticker in stocks:
         data = pd.read_csv('../Output/moving_average/' + ticker + '_moving_average.csv')
-        data = calculate_profits(data, 20_0000, ticker)
+        data, profits = calculate_profits(data, 20_0000, ticker)
 
-        plot_MA(data, ticker, 20_0000)
-
+        sum_balance['balance'] = sum_balance['balance'] + profits
+    print('Total profits:${:,.2f}'.format(sum_balance['balance'][250] - 100_0000))
+    plt.plot(sum_balance['balance']/100_0000)
+    plt.title('Balance of Sum five stocks')
+    plt.savefig('../Output/balance/sum.png', dpi=300)
+    plt.show()

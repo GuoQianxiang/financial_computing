@@ -99,7 +99,7 @@ def add_predict(ticker, y_pred):
 if __name__ == '__main__':
     start_date = '2017-01-01'
     end_date = '2022-12-31'
-    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA']
+    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA', 'BYDDF']
     for ticker in stocks:
         data = get_data(ticker, start_date, end_date)
         y_pred, y_test, model_name = train(data, ticker)

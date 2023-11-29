@@ -60,8 +60,11 @@ def plot_MA(df, ticker):
 
 if __name__ == '__main__':
     # 假设你的DataFrame名为df，且含有'Close'和'prediction'两列
-    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA']
+    stocks = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TCEHY', 'TSLA', 'BYDDF']
     for ticker in stocks:
         data = pd.read_csv('../Output/prediction/' + ticker + '_stock_predicted.csv')
-        data = calculate_MA(data, ticker, 0.05)
+        data = calculate_MA(data, ticker, 0.04)
         plot_MA(data, ticker)
+
+    HSI = 'HSI'
+    data = pd.read_csv('../Data/HSI_stock_data.csv')
