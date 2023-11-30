@@ -1,6 +1,7 @@
-AAPL Total Profits: $11,793.80
-GOOG Total Profits: $13,929.00
-MSFT Total Profits: $7,254.79
-AMZN Total Profits: $-31,642.96
-BYDDF Total Profits: $17,849.26
+AAPL Total Profits: $11,793.80, highest profits:$41,297.91
+GOOG Total Profits: $13,929.00, highest profits:$56,380.63
+MSFT Total Profits: $7,254.79, highest profits:$7,254.79
+AMZN Total Profits: $-31,642.96, highest profits:$30,045.72
+BYDDF Total Profits: $17,849.26, highest profits:$71,268.31
 Total profits:$19,183.89
+Benchmark(TCEHY) Total Profits: $−438,360.75, highest profits:$0.00

@@ -10,6 +10,7 @@ def calculate_profits(df, principal, ticker):
     initial_principal = principal
     shares = 0  # 持有股票数量
     profits = []  # 记录每次买卖的收益
+    highest_profits = 0
 
     for i, row in df.iterrows():
         if row['trade'] == False and shares == 0:
@@ -24,6 +25,7 @@ def calculate_profits(df, principal, ticker):
             principal = profit + initial_principal  # 更新本金
             shares = 0  # 清空持股数量
             profits.append(principal)
+            if profit > highest_profits: highest_profits = profit
 
         else:
             profits.append(principal)
@@ -32,10 +34,11 @@ def calculate_profits(df, principal, ticker):
     if shares > 0:
         profit = shares * df.iloc[-1]['Close'] - initial_principal
         profits[-1] = shares * df.iloc[-1]['Close']
-        print(ticker + " Total Profits: ${:,.2f}".format(profit))
+        print(ticker + " Total Profits: ${:,.2f}".format(profit) + ', highest profits:${:,.2f}'.format(highest_profits))
     # 如果最后已经清仓，则收益等于总金池减去本金
     else:
-        print(ticker + " Total Profits: ${:,.2f}".format(principal - initial_principal))
+        print(ticker + " Total Profits: ${:,.2f}".format(
+            principal - initial_principal) + ', highest profits:${:,.2f}'.format(highest_profits))
     df.loc[:, 'balance'] = profits
     return df, profits
 
@@ -65,9 +68,10 @@ if __name__ == '__main__':
     # 使用 'w' 模式打开文件，如果文件不存在，将会新建一个文件
     with open("profits_result.txt", "w") as file:
         # 写入一些内容
-        file.write("AAPL Total Profits: $11,793.80\n")
-        file.write("GOOG Total Profits: $13,929.00\n")
-        file.write("MSFT Total Profits: $7,254.79\n")
-        file.write("AMZN Total Profits: $-31,642.96\n")
-        file.write("BYDDF Total Profits: $17,849.26\n")
-        file.write("Total profits:$19,183.89")
+        file.write("AAPL Total Profits: $11,793.80, highest profits:$41,297.91\n")
+        file.write("GOOG Total Profits: $13,929.00, highest profits:$56,380.63\n")
+        file.write("MSFT Total Profits: $7,254.79, highest profits:$7,254.79\n")
+        file.write("AMZN Total Profits: $-31,642.96, highest profits:$30,045.72\n")
+        file.write("BYDDF Total Profits: $17,849.26, highest profits:$71,268.31\n")
+        file.write("Total profits:$19,183.89\n")
+        file.write("Benchmark(TCEHY) Total Profits: $−438,360.75, highest profits:$0.00")
